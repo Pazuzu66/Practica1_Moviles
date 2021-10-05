@@ -16,10 +16,14 @@ class DashBoardScreen extends StatelessWidget {
           children: [
             UserAccountsDrawerHeader(
               accountName: Text('Pachuchu'),
-              accountEmail: Text('Pachuchu@tuano'),
+              accountEmail: Text('Pachuchu@perron'),
+              onDetailsPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/user');
+              },
               currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    'https://scontent.fcyw3-1.fna.fbcdn.net/v/t1.6435-9/219586071_4218360068253777_8347528374764391585_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=gYUOfIpsKWMAX_QNVsJ&_nc_ht=scontent.fcyw3-1.fna&oh=6940740293baa88e7bd4f68e50e1052f&oe=616548D1'),
+                // backgroundImage: NetworkImage(
+                //     'https://scontent.fcyw3-1.fna.fbcdn.net/v/t1.6435-9/219586071_4218360068253777_8347528374764391585_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=gYUOfIpsKWMAX_QNVsJ&_nc_ht=scontent.fcyw3-1.fna&oh=6940740293baa88e7bd4f68e50e1052f&oe=616548D1'),
               ),
               decoration: BoxDecoration(color: ColorSettings.colorPrimary),
             ),
@@ -31,6 +35,26 @@ class DashBoardScreen extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/opcion1');
+              },
+            ),
+            ListTile(
+              title: Text('Intenciones'),
+              subtitle: Text('Intenciones Implicitas'),
+              leading: Icon(Icons.phone_android),
+              trailing: Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/intenciones');
+              },
+            ),
+            ListTile(
+              title: Text('Notas'),
+              subtitle: Text('notas'),
+              leading: Icon(Icons.note),
+              trailing: Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/notas');
               },
             )
           ],
