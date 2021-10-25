@@ -70,6 +70,7 @@ class _Opcion1ScreenState extends State<Opcion1Screen> {
             hintText: 'Introduce el total',
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
             contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5)));
+            //Retornamos el Stack
     return Stack(
       alignment: Alignment.topCenter,
       children: [

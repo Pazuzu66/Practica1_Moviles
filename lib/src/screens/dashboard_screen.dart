@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/src/controllers/movies/movies_controller.dart';
 import 'package:flutter_application_1/src/utils/color_settings.dart';
+import 'package:get/get.dart';
 
 class DashBoardScreen extends StatelessWidget {
   const DashBoardScreen({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
+    //Iniciamos El Controller de Popular Movies
+    final pmoviesControoller = Get.put(MoviesController());
+    pmoviesControoller.getListFavorites();
     return Scaffold(
       appBar: AppBar(
         title: Text('DASHBOARD'),
@@ -55,6 +60,16 @@ class DashBoardScreen extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/notas');
+              },
+            ),
+            ListTile(
+              title: Text('Peliculas'),
+              subtitle: Text('Peliculas Populares'),
+              leading: Icon(Icons.movie),
+              trailing: Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/movies');
               },
             )
           ],

@@ -30,7 +30,9 @@ class _NotasScreenState extends State<NotasScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/agregar');
+                Navigator.pushNamed(context, '/agregar').whenComplete(() {
+                  setState(() {});
+                });
               },
               icon: Icon(Icons.note_add))
         ],
@@ -62,7 +64,7 @@ class _NotasScreenState extends State<NotasScreen> {
     return RefreshIndicator(
       onRefresh: () {
         return Future.delayed(Duration(seconds: 2), () {
-          setState(() {} );
+          setState(() {});
         });
       },
       child: ListView.builder(

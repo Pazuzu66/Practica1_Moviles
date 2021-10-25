@@ -1,17 +1,22 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter_application_1/src/controllers/movies/movies_controller.dart';
+import 'package:flutter_application_1/src/models/favorite_movies_model.dart';
 import 'package:flutter_application_1/src/models/notas_model.dart';
 import 'package:flutter_application_1/src/models/user_model.dart';
+import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
+  final moviesController = Get.find<MoviesController>();
   static final _nombreDB = "DBNotas";
   static final _versionBD = 1;
   static final _nombreTBL = "notas";
   static final _userTBL = 'user';
+  static final _favoriteMoviesTBL = 'favorite_movies';
 
   static Database? _database;
 
@@ -32,6 +37,8 @@ class DatabaseHelper {
         "Create Table $_nombreTBL (id INTEGER PRIMARY KEY, titulo VARCHAR(50), detalle VARCHAR(100))");
     await db.execute(
         "Create Table $_userTBL (id INTEGER PRIMARY KEY, nombre VARCHAR(50), apPaterno VARCHAR(50), apMaterno VARCHAR(50), telefono VARCHAR(13), email VARCHAR(150), imgPath VARCHAR(150))");
+    await db.execute(
+        "Create Table $_favoriteMoviesTBL (id INTEGER PRIMARY KEY, name TEXT, imgpath TEXT, overview TEXT, posterpath TEXT)");
   }
 
   Future<int> insert(Map<String, dynamic> row) async {
@@ -53,7 +60,7 @@ class DatabaseHelper {
   Future<List<NotasModel>> getAllNotes() async {
     var conexion = await database;
     var result = await conexion!.query(_nombreTBL);
-    return result.map((notaMap) => NotasModel.fromMap(notaMap)).toList();
+    return result.map( ( notaMap ) => NotasModel.fromMap(notaMap)).toList();
   }
 
   Future<NotasModel> getNote(int id) async {
@@ -87,5 +94,34 @@ class DatabaseHelper {
       return UserModel.fromMap(result.first);
     }
     return UserModel();
+  }
+  //-----------------------Movies------------------------------------------------------------------------------------------------------------------------
+  Future<int> insertFavorite(Map<String,dynamic> row ) async {
+    var conexion = await database;
+    return conexion!.insert(_favoriteMoviesTBL, row);
+  }
+  Future<int> deleteFavorite(int id) async {
+    var conexion = await database;
+    return conexion!.delete(_favoriteMoviesTBL,where: 'id = ?', whereArgs: [id]);
+  }
+  Future<List<FavoriteModel>> getFavorites() async {
+    var conexion = await database;
+    var result = await conexion!.query(_favoriteMoviesTBL);
+    return result.map( ( favoriteMap ) => FavoriteModel.fromMap(favoriteMap)).toList();        
+  }
+
+  Future checkFavorite(int id) async {
+    var conexion = await database;
+    var result = await conexion!.rawQuery(
+      ''' SELECT id FROM $_favoriteMoviesTBL WHERE id = $id''');
+    if(result.isEmpty){
+      moviesController.flagFavorite.value = false;
+      moviesController.update();
+    }
+    else {
+      moviesController.flagFavorite.value = true;
+      moviesController.update();
+    } 
+    
   }
 }
